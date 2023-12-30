@@ -1,0 +1,24 @@
+1. 
+StringExecutor - StringInspector
+2. 
+Postfix - PostfixSolver
+3.
+Rotate - QueueRotator
+4. 
+Palindrome - PalindromeSolver
+5. 
+Test - TestRunner
+6. 
+send_message - send_message_to_server
+7. 
+recived - on_message_recived
+8.
+connect - connect_to_server
+9.
+start_sending - start_meterage_sending
+10.
+encode - encode_mirror
+11.
+get_name - get_name_mirror
+12.
+to_do - serialize
