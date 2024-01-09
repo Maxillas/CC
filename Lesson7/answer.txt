@@ -1,0 +1,33 @@
+1.
+class Division
+{
+Division::DivisionOnInt(int a) {}
+Division::DivisionOnDouble(double a) {}
+}
+// перегрузка конструктора по входному значению - double или int
+
+2.
+class Sign
+{
+Sign::GreaterNumberSign(int a, int b) {}
+Sign::Sign(int a) {}
+}
+//перегрузка конструктора по количеству входных значений
+
+3.
+class Comparision
+{
+Comparision::Comparision(int a, int b) {}
+Comparision::ComparisionFromDouble(double a, double b){}
+}
+//класс сравнения двух чисел, во втором методе проиходит преобразование к int
+
+4.
+В своей работе встречал абстрактные классы. Назывались они следующим образом:
+- AbstractConnection
+- AbcstactClientConnection
+- AbcstactConnectionServer
+Исходя из рекомендаций, считаю в данном случае лучше будет назвать следующим образом:
+- Connection
+- ClientConnection
+- ConnectionServer
