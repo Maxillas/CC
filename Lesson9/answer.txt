@@ -1,0 +1,139 @@
+Было:
+    for (unsigned int i = 0; i < input.size(); ++i) {
+
+        buffer = input[i] * 41;
+	int prev = buffer / 100;
+	int next = buffer % 100;
+
+        output += prev;
+        output += next;
+
+    }
+Стало:
+    for (unsigned int i = 0; i < input.size(); ++i) {
+
+        buffer = input[i] * 41;
+	if (buffer > INT_MAX) {
+		// trow exception 
+	}
+	if(buffer == 0) {
+		// trow exception 
+	}
+        int prev = 100 / buffer;
+        int next = 100 % buffer;
+
+        output += prev;
+        output += next;
+
+    }
+1.
+Добавил проверку на переполнение целого числа при умножении входных данных на 41
+2.
+Добавил проверку на возможное деление на 0
+Было:
+
+for (unsigned i = 0; i < input.size(); ++i) {
+
+        if ((int)input[i] >= 256) {
+            int buf = 3 - 256;
+            output += input[i] + buf;
+
+        } else output += input[i] + 3;
+    }
+
+Стало:
+
+int const ASCII_DECODE = 256, BALANCING_MEMBER = 3;
+for (unsigned i = 0; i < input.size(); ++i) {
+
+        if ((int)input[i] >= ASCII_DECODE) {
+            int buf = BALANCING_MEMBER - ASCII_DECODE;
+            output += input[i] + buf;
+	    if (output >= INT_MAX) { throw excepition }
+
+        } else output += input[i] + BALANCING_MEMBER;
+    }
+
+3.
+Исключил магическое число, заменил его на константу (256)
+4.
+Исключил магическое число, заменил его на константу (3)
+5.
+Добавил проверку на переполнение целочисленное переменной
+Было:
+
+for (unsigned int i = 0; i < input.size(); ++i) {
+
+        if ((int)input[i] <= 3) {
+            output += ASCII_DECODE - input[i];
+        } else output += input[i] - 3;
+    }
+
+Стало:
+
+for (unsigned int i = 0; i < input.size(); ++i) {
+
+        if ((int)input[i] <= 3) {
+            output += ASCII_DECODE - input[i];
+        } else output += input[i] - BALANCING_MEMBER ;
+    }
+6.
+Исключил магические числа
+Было:
+if (Meterages * MeterageInput = dynamic_cast<Meterages*>(inputMessage)) {
+
+        std::ostringstream MeterageOutput;
+        MeterageOutput << MeterageInput->type << " " << MeterageInput->timeStamp << " " << int(MeterageInput->value) << " ";
+        output = MeterageOutput.str();
+Стало:
+if (MeterageInput == "Meterages") {
+
+        std::ostringstream MeterageOutput;
+        MeterageOutput << MeterageInput->type << " " << MeterageInput->timeStamp << " " << int(MeterageInput->value) << " ";
+        output = MeterageOutput.str();
+
+7.
+Исключил преобразование типов
+Было:
+
+	    if node.next is None and (compare >= 0) and self.__ascending is True:
+                add_in_tail(self, node, input_node)
+                return
+            elif (node.next is None or node.prev is None) and compare >= 0 and self.__ascending is False:
+                add_in_head(self, node, input_node)
+                return
+            elif (node.next is None or node.prev is None) and compare <= 0 and self.__ascending is True:
+                add_in_head(self, node, input_node)
+                return
+            elif node.next is None and compare <= 0 and self.__ascending is False:
+                add_in_tail(self, node, input_node)
+                return
+Стало:
+
+	    is_added_to_tail_first = node.next is None and (compare >= 0) and self.__ascending is True
+	    is_added_to_tail_second = elif node.next is None and compare <= 0 and self.__ascending is False:
+	    is_added_to_head_first = (node.next is None or node.prev is None) and compare >= 0 and self.__ascending is False
+	    is_added_to_head_second = (node.next is None or node.prev is None) and compare <= 0 and self.__ascending is True
+		
+	    if is_added_to_tail_first or is_added_to_tail_second:
+                add_in_tail(self, node, input_node)
+                return
+            elif is_added_to_head_first or is_added_to_head_second:
+                add_in_head(self, node, input_node)
+                return
+
+8.
+Выделил условия добавления в хвост в отдельную булеву переменную
+9.
+Выделил условия добавление в голову в отдельную булеву переменную
+10.
+Сократил количество elif путем объединения двух условий добавления в хвост
+11.
+Сократил количество elif путем объединения двух условий добавления в голову
+
+Было:
+if( input_string == "message_1"):
+Стало:
+FIRST_CONDITION = "message_1"
+if(input_string == FIRST_CONDITION)
+12. Исключил магическую строку, выделил ее в константу
