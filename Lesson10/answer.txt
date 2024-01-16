@@ -1,0 +1,209 @@
+Было:
+
+class Mirror: public BaseEncoderExecutor{
+
+    public:
+
+        string encode(const string& input) final;
+        string decode(const string& input) final;
+        string getname();
+    private:
+        string AlgorithmName;
+
+};
+
+Стало:
+
+class Mirror final: public BaseEncoderExecutor{
+
+    public:
+
+        string encode(const string& input) final;
+        string decode(const string& input) final;
+        string getname();
+    private:
+        string AlgorithmName = "Mirror";
+
+};
+
+
+1.
+Явно инициализировал переменную AlgorithmName
+2.
+Объявил класс как final с целью исключить дальнейшее наследование
+
+Было:
+struct DeviceInformation {
+    unsigned int counter = 0;
+    uint64_t lastTimeStamp = 5;
+    double MSE = 0;
+
+};
+
+Стало:
+struct DeviceInformation {
+    unsigned int counter = 0;
+    uint64_t const lastTimeStamp = 5;
+    double MSE = 0;
+};
+
+3.
+Объявил переменную lastTimeStamp как const
+4.
+Переменную MSE сделал с двойной точностью (double)
+
+Было:
+struct ConnectedHandler : public AbstractAction
+    {
+    public:
+        ConnectedHandler(DeviceMock* client) :
+            m_client(client) {}
+        void operator()()
+        {
+            m_client->onConnected();
+        }
+
+    private:
+        DeviceMock* m_client;
+    };
+    m_clientConnection->setConnectedHandler(new ConnectedHandler(this));
+
+Стало:
+
+struct ConnectedHandler : public AbstractAction
+    {
+    public:
+        ConnectedHandler(DeviceMock* client) :
+            m_client(client) {}
+        void operator()() final
+        {
+            m_client->onConnected();
+        }
+
+    private:
+        DeviceMock* m_client = nullptr;
+    };
+    m_clientConnection->setConnectedHandler(new ConnectedHandler(this));
+
+5.
+Явно инициализировал указатель m_client нулевым значением
+6.
+Объявил метод как final
+
+Было:
+ auto movebutton = [=](){
+            int speed = 5;
+            if (button->y() + 60 >= window->frameGeometry().height()) {
+                window->setWindowTitle("You Lose!");
+                window->setStyleSheet("background-color: red");
+            } else button->move(button->x(), button->y() + speed);
+
+Стало:
+
+ auto movebutton = [=](){
+            int const speed = 5;
+            if (button->y() + 60 >= window->frameGeometry().height()) {
+                window->setWindowTitle("You Lose!");
+                window->setStyleSheet("background-color: red");
+            } else button->move(button->x(), button->y() + speed);
+7.
+Указал переменную speed как const
+
+Было:
+    int i;
+    for (i; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
+        int c;
+        c = a + b;
+        cout << c << endl;
+    }
+Стало:
+    for (int i = 0; i < n; i++) {
+        int a = 0, b = 0;
+        cin >> a >> b;
+        int c = a + b;
+        cout << a + b << endl;
+    }
+
+8.
+инициализировал переменную i непосредственно внутри цикла
+9.
+Явно иницилизировал переменные a и b
+10.
+инициализировал переменную c сразу
+
+Было:
+
+int main()
+{
+    int a, b, c;
+    cin >> a >> b >> c;
+    double output, D;
+    D = sqrt(b * b - 4 * a * c);
+    //cout << D << endl;
+    if(D == 0) {
+        output = -b / (2 * a);
+        cout << output << " " << output;
+    } else if (D > 0) {
+        cout << (-b + D) / (2 * a) << " " << (-b - D) / (2 * a);
+    } else {
+        cout << "No real roots" << endl;
+    }
+}
+
+Стало:
+
+int foo()
+{
+    int a, b, c;
+    cin >> a >> b >> c;
+    double output, D = sqrt(b * b - 4 * a * c);
+    if (a == 0) {return;}
+    if(D == 0) {
+        output = -b / (2 * a);
+        cout << output << " " << output;
+    } else if (D > 0) {
+        cout << (-b + D) / (2 * a) << " " << (-b - D) / (2 * a);
+    } else {
+        cout << "No real roots" << endl;
+    }
+}
+11.
+Добавил проверку на 0 в знаменателе
+12.
+иницилизировал D при объявлении
+
+Было:
+
+int main()
+{
+    int T, i;
+    cin >> T;
+    int input;
+    for (i; i < T; i++) {
+        cin >> input;
+        cout << log2(input) << endl;
+    }
+}
+
+Стало:
+
+
+int main()
+{
+    int end_of_massive = 0;
+    cin >> end_of_massive;
+    int input = 0;
+    for (int i = 0; i < end_of_massive; i++) {
+        cin >> input;
+        cout << log2(input) << endl;
+    }
+}
+13.
+Переименовал переменную T
+14.
+инициализировал переменные end_of_massive и input
+15.
+Определил и иниицализровал i внутри цикла
+
