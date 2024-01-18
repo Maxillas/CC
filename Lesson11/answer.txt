@@ -1,0 +1,274 @@
+Было:
+        compare = self.compare(input_node.value, node.value)
+
+        while node is not None:
+
+
+            if node.next is None and (compare >= 0) and self.__ascending is True:
+                add_in_tail(self, node, input_node)
+                return
+            elif (node.next is None or node.prev is None) and compare >= 0 and self.__ascending is False:
+                self.head = input_node
+                input_node.next = node
+                node.prev = input_node
+                return
+            elif (node.next is None or node.prev is None) and compare <= 0 and self.__ascending is True:
+                self.head = input_node
+                input_node.next = node
+                node.prev = input_node
+                return
+            elif node.next is None and compare <= 0 and self.__ascending is False:
+                self.head = input_node
+                input_node.next = node
+                node.prev = input_node
+                return
+
+Стало:
+        def add_in_head(self, node, input_node):
+            self.head = input_node
+            input_node.next = node
+            node.prev = input_node
+
+        def add_in_tail(self, node, input_node):
+            self.tail = input_node
+            node.next = input_node
+            input_node.prev = node
+
+        if node is None:
+            self.head = input_node
+            self.tail = input_node
+            return
+
+        while node is not None:
+            compare = self.compare(input_node.value, node.value)
+
+            if node.next is None and (compare >= 0) and self.__ascending is True:
+                add_in_tail(self, node, input_node)
+                return
+            elif (node.next is None or node.prev is None) and compare >= 0 and self.__ascending is False:
+                add_in_head(self, node, input_node)
+                return
+            elif (node.next is None or node.prev is None) and compare <= 0 and self.__ascending is True:
+                add_in_head(self, node, input_node)
+                return
+            elif node.next is None and compare <= 0 and self.__ascending is False:
+                add_in_tail(self, node, input_node)
+                return
+
+1, 2, 3.
+Выделилил повторяющийся код в отдельные функции
+4.
+Внес переменную compare внутрь цикла
+
+Было:
+
+    unsigned int numberOfTimestamp = 0;
+    Message * output;
+    unsigned int i = 0
+
+    if (ScheduleMap.find(deviceId) == ScheduleMap.end()) {
+
+        output = new Errors(NoShedule);
+        return output;
+    } else if (inputMeterage->timeStamp < minTimestamp || inputMeterage->timeStamp > maxTimestamp){
+        output = new Errors(NoTimeStamp);
+        return output;
+    }  else if (inputMeterage->timeStamp < Information[deviceId].lastTimeStamp){
+        output = new Errors(Obsolete);
+        return output;
+    } else { //отправка команды, запись последней метки времени, расчет СКО
+
+        for (i; sheduleStruct.schedule.size(); i++) {
+
+            if (sheduleStruct.schedule[i].timeStamp == inputMeterage->timeStamp) numberOfTimestamp = i;
+        }
+
+Стало:
+
+    if (ScheduleMap.find(deviceId) == ScheduleMap.end()) {
+
+        Message * output = new Errors(NoShedule);
+        return output;
+    } else if (inputMeterage->timeStamp < minTimestamp || inputMeterage->timeStamp > maxTimestamp){
+
+        Message * output = new Errors(NoTimeStamp);
+        return output;
+    }  else if (inputMeterage->timeStamp < Information[deviceId].lastTimeStamp){
+        Message * output = new Errors(Obsolete);
+        return output;
+    } else { //отправка команды, запись последней метки времени, расчет СКО
+
+        unsigned int numberOfTimestamp = 0;
+        for (unsigned int i = 0; sheduleStruct.schedule.size(); i++) {
+
+            if (sheduleStruct.schedule[i].timeStamp == inputMeterage->timeStamp) numberOfTimestamp = i;
+        }
+
+5.
+Внес переменную numberOfTimestamp внутрь if
+6.
+Создание объекта класса Message внес внутрь if
+7.
+Исключил отсутствие инициализации объекта типа Message
+8.
+Определил и инициализировал переменную i внутри цикла
+
+Было:
+string Multiply41::encode(const string& input) {
+
+
+    for (unsigned int i = 0; i < input.size(); ++i) {
+
+        buffer = input[i] * 41;
+        int prev = buffer / 100;
+        int next = buffer % 100;
+
+        output += prev;
+        output += next;
+
+    }
+    return output;
+}
+
+Стало:
+
+class Multiply41 final: public BaseEncoderExecutor {
+
+    public:
+
+        string encode(const string& input) final;
+        string decode(const string& input) final;
+        string getname();
+    private:
+        string AlgorithmName = "Multiply41";
+        string output;
+        int buffer;
+
+};
+
+9.
+Определил переменную output внутри класса и сделал ее приватной
+10.
+Определил переменную buffer внутри класса и сделал ее приватной
+
+Было:
+int speed = 5;
+auto movebutton = [=](){
+
+            if (button->y() + 60 >= window->frameGeometry().height()) {
+                window->setWindowTitle("You Lose!");
+                window->setStyleSheet("background-color: red");
+            } else button->move(button->x(), button->y() + speed);
+
+            QPoint CoursorGlobal = QCursor::pos();
+            QPoint CoursorWidget = window->mapFromGlobal(CoursorGlobal);
+
+            if ((CoursorWidget.x() <= button->x() + 30) && (CoursorWidget.x() >= button->x())
+            && (CoursorWidget.y() <= button->y() + 30) && (CoursorWidget.y() >= button->y())) {
+
+                speedChangeTimer->start(buttonSpeed/10);
+
+            }
+
+Стало:
+
+auto movebutton = [=](){
+            int speed = 5;
+            if (button->y() + 60 >= window->frameGeometry().height()) {
+                window->setWindowTitle("You Lose!");
+                window->setStyleSheet("background-color: red");
+            } else button->move(button->x(), button->y() + speed);
+
+            QPoint CoursorGlobal = QCursor::pos();
+            QPoint CoursorWidget = window->mapFromGlobal(CoursorGlobal);
+
+            if ((CoursorWidget.x() <= button->x() + 30) && (CoursorWidget.x() >= button->x())
+            && (CoursorWidget.y() <= button->y() + 30) && (CoursorWidget.y() >= button->y())) {
+
+                speedChangeTimer->start(buttonSpeed/10);
+
+            }
+11.
+Сделал переменную speed локальной для функции
+
+Было:
+__init__:
+self.index = self.hash_fun(key)
+self.count = 0
+
+def get(self, key):
+        if self.is_key(key) is False:
+            return None
+
+        while self.values[index] != key:
+            index += 1
+            count += 1
+            if index > self.size - 1:
+                index = index % self.size
+                count += 1
+            if count >= self.size:
+                return None
+        self.hits[index] += 1
+        return self.slots[index]
+
+Стало:
+
+def get(self, key):
+        if self.is_key(key) is False:
+            return None
+        index = self.hash_fun(key)
+        count = 0
+        while self.values[index] != key:
+            index += 1
+            count += 1
+            if index > self.size - 1:
+                index = index % self.size
+                count += 1
+            if count >= self.size:
+                return None
+        self.hits[index] += 1
+        return self.slots[index]
+
+12.
+Переместил переменную index в локальную функцию
+13.
+Переместил переменную count в локальную функцию
+
+Было:
+        button->move(x, y);
+        button->resize(30,30);
+        button->show();
+        button->setStyleSheet("background-color: blue");
+
+Стало:
+
+
+    void setButtonParam(x, y) {
+        button->move(x, y);
+        button->resize(30,30);
+        button->show();
+        button->setStyleSheet("background-color: blue");
+    }
+
+    class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+    QWidget * window = nullptr;
+    QTimer * timer = nullptr;
+    QTimer * speedChangeTimer = nullptr;
+    QTimer * runningCheckPoint = nullptr;
+    QRandomGenerator * generator = nullptr;
+private:
+    int x;
+    int y;
+
+};
+14.
+Группировал установку параметров кнопки в отдельную функцию
+15.
+Выделил переменные x, y в качестве параметров функции и определил их как приватные атрибуты класса
+
