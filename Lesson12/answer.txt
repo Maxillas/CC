@@ -1,0 +1,49 @@
+void MainWindow::changeColor()
+{
+    QString color1;
+
+    uint32_t r1 = QRandomGenerator::global()->bounded(256);
+    uint32_t g1 = QRandomGenerator::global()->bounded(256);
+    uint32_t b1 = QRandomGenerator::global()->bounded(256);
+    QColor colors = QColor(r1, g1, b1);
+    QString style = QString("background-color: %1").arg(colors.name());
+    button4->setStyleSheet(style);
+    color1 = QString("%1").arg(colors.name());
+    button4->setText(color1);
+}
+
+1. Связывание переменных r1, g1, b1 происходит непосредственно в момент создания (написания) кода. Это связано с тем, что данное значение не будет изменяться далее в процессе выполнения данного метода
+
+string ROT3::encode(const string& input){
+
+    string output;
+    int const CODER_CONST = 256;
+    for (unsigned i = 0; i < input.size(); ++i) {
+
+        if ((int)input[i] >= 256) {
+            int buf = 3 - CODER_CONST;
+            output += input[i] + buf;
+
+        } else output += input[i] + 3;
+    }
+
+
+    return output;
+}
+
+2. Связывание происходит через константу непосредственно в момент создания кода
+
+float CommandCenter::calculationMSE(uint64_t deviceId, uint8_t correctionInput){
+
+    float buf1;
+    float MSE;
+    float outputMSE;
+    unsigned int counter = Information[deviceId].counter;
+
+    buf1 = correctionInput;
+    MSE = Information[deviceId].MSE;
+    outputMSE = sqrt((pow(MSE, 2) * counter + pow(buf1, 2))/(counter + 1));
+    return outputMSE;
+}
+
+3. Связывание происходит во время выполнение программы, поскольку в разные моменты времени, выбранным переменным может присвоиться разное значение.
