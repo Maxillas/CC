@@ -1,0 +1,53 @@
+1.
+class Stack:
+    def __init__(self):
+        self.stack = DynArray()
+
+В реализации структуры данных стэк, можно и нужно использовать более безопасную структуру данных, например связный список
+
+2.
+def put(self, value):
+        index = self.seek_slot(value)
+        if index is not None:
+            self.slots[index] = value
+        return index
+
+Метод put в хэш-таблице, прямую индексацию можно заменить на последовательную, но потеряем в производительности. Данный способ можно применять в случае, если производительность не важна
+
+3.
+
+string Multiply41::encode(const string& input) {
+
+    string output;
+    int buffer;
+
+    for (unsigned int i = 0; i < input.size(); ++i) {
+
+        buffer = input[i] * 41;
+        int prev = buffer / 100;
+        int next = buffer % 100;
+
+        output += prev;
+        output += next;
+
+    }
+    return output;
+}
+
+Прямую индексацию строки input можно заменить на последовательную без потери производительности
+
+4.
+
+void ChartBuffer::setPointColor(int idx, const QColor &color)
+{
+    if(idx < m_data.size()) {
+        m_data[idx].second = color;
+    }
+}
+
+Прямую индексацию к элементу массива можно заменить на последовательную путем замены m_data на связный список
+
+5.
+AvgValue_t<double> m_avg_c_dyn;
+
+Данный вектор можно заменить на очередь или связный список, поскольку его заполнение в дальнейшем будет осуществляться последовательно
