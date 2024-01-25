@@ -1,0 +1,157 @@
+1.
+// Проверка входящего сообщения
+if (Meterages * MeterageInput = dynamic_cast<Meterages*>(inputMessage)) {
+
+        std::ostringstream MeterageOutput;
+        MeterageOutput << MeterageInput->type << " " << MeterageInput->timeStamp << " " << int(MeterageInput->value) << " ";
+        output = MeterageOutput.str();
+
+    } else if (Commands * CommandInput = dynamic_cast<Commands*>(inputMessage)) {
+
+        std::ostringstream CommandOutput;
+        CommandOutput << CommandInput->type << " " << CommandInput->correction << " ";
+        output = CommandOutput.str();
+
+    } else if (Errors * ErrorInput = dynamic_cast<Errors*>(inputMessage)) {
+
+        std::ostringstream ErrorOutput;
+        ErrorOutput << ErrorInput->type << " " << ErrorInput->errorType<< " ";
+        output = ErrorOutput.str();
+
+    }
+
+
+2.
+
+enum op_status_t {
+    opNone, // uninitialized or stopped
+    opRunning, // current operation is running
+    opGoal, // operation goal has been achieved
+    opTimeout, // operation is timed out (target may not be reached)
+    opError, // error state
+};
+
+3.
+
+/**
+ * Turbine operation status
+ */
+struct opst_turbine_t {
+    enum opid_t {
+        opSet, // set
+        opVolume,
+        opPRamp,
+        opTakeoff,
+        opLanding,
+        opDriven, // controlled mode, turbine is being driven by valve
+    };
+    opid_t op; // running operation
+    op_status_t st; // operation status
+};
+
+4.
+
+class AbstractClientConnection : public AbstractConnection
+{
+public:
+    /*!
+     * \brief Идентификатор клиента.
+     */
+    virtual uint64_t bindedId() const = 0;
+    /*!
+     * \brief Назначить клиенту идентификатор.
+     * \param clientId - новый идентификатор клиента
+     * \return false в случае ошибки
+     */
+    virtual bool bind(uint64_t clientId) = 0;
+    /*!
+     * \brief Выполнить соединение клиента с сервером.
+     * \param serverId - идентификатор сервера
+     * \return false в случае ошибки.
+     */
+    virtual bool connectToHost(uint64_t serverId) = 0;
+    /*!
+     * \brief Установить обработчик события установки соединения с сервером.
+     * \param handler - владеющий указатель на обработчик
+     */
+    virtual void setConnectedHandler(AbstractAction* handler) = 0;
+};
+
+5.
+void rtcontext_t::resetMV() const {
+    volumesMonitor.reset();
+}
+// @brief минутный (вдыхаемый!) объём в мл за последнюю минуту
+// @return
+
+6.
+
+pcvg_ctx_t pcvg;
+    phase_t phase; // phase id
+    unsigned f_phase_init :1;
+    //! UPZ CHANGED
+    unsigned f_phase_sngl_rqr :1;   // флаг проведения процедуры  одноступ. рекрутмента
+
+7.
+
+// Передаем сигнал, пришедший сверху о том что надо открыть окно настроек параметров вентиляции, соответствующему слоту.
+    connect(this, &DynamicWindow::openVModeWidgetSignal,
+            m_ventilation_mode_window, &VentilationModeWindow::showVModeParamsWidget);
+
+8.
+Было:
+
+    uint64_t timeStamp = 0; // Метка времени
+    uint8_t value = 0; // измерение
+
+Стало:
+
+    uint64_t timeStamp = 0;
+    uint8_t value = 0;
+
+9.
+Было:
+
+struct DeviceWorkSchedule
+{
+    uint64_t deviceId = 0;       ///< Идентификатор устройства
+    std::vector<Phase> schedule; ///< План работы устройства
+};
+
+Стало:
+
+struct DeviceWorkSchedule
+{
+    uint64_t deviceId = 0;
+    std::vector<Phase> DeviceWorkScheduleVector;
+};
+
+10.
+
+Было:
+uint8_t correction =  sheduleStruct.schedule[numberOfTimestamp].timeStamp - inputMeterage->value; //расчет корректировки
+
+Стало:
+// Расчет корректировки
+uint8_t correction =  sheduleStruct.schedule[numberOfTimestamp].timeStamp - inputMeterage->value;
+11.
+
+Было:
+Information[deviceId].lastTimeStamp = inputMeterage->timeStamp; //установка текущей метки времени в качестве последней для текущего устройства
+
+Стало
+Information[CurrentDeviceId].lastTimeStamp = inputMeterage->timeStamp;
+
+12.
+
+Было:
+ } else { //отправка команды, запись последней метки времени, расчет СКО
+
+        unsigned int numberOfTimestamp = 0;
+        for (unsigned int i = 0; sheduleStruct.schedule.size(); i++) {
+Стало:
+
+ } else {
+        unsigned int numberOfTimestamp = 0;
+        for (unsigned int i = 0; sheduleStruct.schedule.size(); i++) {
+Комментарий неуместен, поскольку в дальнейшем по коду понятно какие действия выполняются
