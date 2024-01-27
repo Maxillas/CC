@@ -1,0 +1,116 @@
+1. "Предупреждение о последствиях"
+ # Не запускайте код ниже при отладке, выполняется долго.
+ # def test_speed(self):
+    #     start_time = time.time()
+    #     powerset1 = PowerSet()
+    #     for i in range(10000):
+    #          powerset1.put(i)
+    #     end_time = time.time()
+    #
+    #     self.assertEqual(end_time - start_time < 5, True)
+    #
+    #     start_time = time.time()
+    #     for i in range(10000):
+    #          powerset1.remove(i)
+    #     end_time = time.time()
+    #     self.assertEqual(end_time - start_time < 5, True)
+    #
+    #     powerset1 = PowerSet()
+    #     for i in range(10000):
+    #         powerset1.put(i)
+    #
+    #     powerset2 = PowerSet()
+    #     for i in range(10000, 20000):
+    #         powerset1.put(i)
+    #     start_time = time.time()
+    #     powerset1.intersection(powerset2)
+    #     end_time = time.time()
+    #     self.assertEqual(end_time - start_time < 5, True)
+    #
+    #     start_time = time.time()
+    #     powerset1.union(powerset2)
+    #     end_time = time.time()
+    #     self.assertEqual(end_time - start_time < 5, True)
+    #
+    #     start_time = time.time()
+    #     powerset1.difference(powerset2)
+    #     end_time = time.time()
+    #     self.assertEqual(end_time - start_time < 5, True)
+    #
+    #     start_time = time.time()
+    #     powerset1.issubset(powerset2)
+    #     end_time = time.time()
+    #     self.assertEqual(end_time - start_time < 5, True)
+2. "Прояснение"
+// После вставки все оказываются в одной строке -> Можно использовать UNIQUE
+#define ASSERT_EQUAL(x, y)                                                   \
+    {                                                                        \
+        std::ostringstream UNIQUE;                                           \
+        UNIQUE << #x << " != " << #y << ", " << __FILE__ << ":" << __LINE__; \
+        AssertEqual(x, y, UNIQUE.str());                                     \
+    }
+
+3. "Прояснение"
+NON_COPYABLE(DeviceMonitoringServer)
+public:
+    /*!
+     * \brief Конструктор.
+     * \param connectionServer - владеющий указатель на сервер для приема подключений
+     */
+    DeviceMonitoringServer(AbstractConnectionServer* connectionServer);
+    ~DeviceMonitoringServer();
+4. "Прояснение"
+void onNewIncomingConnection(AbstractConnection* conn);
+    /*!
+     * \brief Обработчик разрыва соединения.
+     * \param deviceId - идентификатор устройства
+     */
+5. "Комментарий TODO"
+void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
+{
+    // TODO, если нужен
+}
+6. "Информативный комментарий"
+/*!
+ * \brief Класс, эмитирующий устройство.
+ */
+class DeviceMock
+{
+
+7. "Прояснение"
+void sendMessage(const std::string& message) const;
+    /*!
+     * \brief Обработчик получения нового сообщения от сервера.
+     * \param message - сообщение
+     */
+8. "Комментарий TODO"
+void DeviceMock::onConnected()
+{
+    // TODO, если нужно
+}
+9. "Прояснение"
+Message * output = new Commands(correction);
+	//установка текущей метки времени в качестве последней для текущего устройства
+        Information[deviceId].lastTimeStamp = inputMeterage->timeStamp; 
+        Information[deviceId].MSE = calculationMSE(deviceId, correction);
+        Information[deviceId].counter++;
+10. "Информативный комментарий"
+// AbstractClientConnection interface
+    uint64_t bindedId() const final { return m_clientId; }
+    bool bind(uint64_t clientId) final;
+    bool connectToHost(uint64_t serverId) final;
+    void setConnectedHandler(AbstractAction* handler) final;
+11. "Предупреждение о последтствиях"
+# Данные тесты обязательно должны пройти, без них дальнейшие тесты могут выдавать некоректный результат
+def test_clean(self):
+        n1 = Node(12)
+        n2 = Node(46)
+        n3 = Node(25)
+        n4 = Node(12)
+        s_list = LinkedList2()
+12. "Комментарий TODO"
+
+void DeviceMock::onDisconnected()
+{
+    // TODO, если нужно
+}
