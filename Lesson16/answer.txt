@@ -1,0 +1,224 @@
+Было:
+    if(!button4) {
+        //QRandomGenerator generator; //если эти объекты определить в хедере, то все крашится,
+        QString color; //заходит в элсе, где кнопка уже создана
+        //QRandomGenerator * generator = new QRandomGenerator();
+        //uint32_t r = generator.bounded(256); было так, не работало как надо
+
+        uint32_t r = QRandomGenerator::global()->bounded(256); //здесь аналогично
+        uint32_t g = QRandomGenerator::global()->bounded(256);
+        uint32_t b = QRandomGenerator::global()->bounded(256);
+Стало:
+    if(!button4) {
+        QString color; //заходит в элсе, где кнопка уже создана
+
+        uint32_t r = QRandomGenerator::global()->bounded(256);
+        uint32_t g = QRandomGenerator::global()->bounded(256);
+        uint32_t b = QRandomGenerator::global()->bounded(256);
+
+1. Закомментированный код, исключил
+2. Шум, исключил
+________________
+Было:
+
+#ifndef BASEENCODEREXECUTOR_H
+#define BASEENCODEREXECUTOR_H
+
+#include <string>
+using std::string;
+
+class BaseEncoderExecutor {
+    public:
+
+        virtual std::string encode(const string & message) = 0;
+        virtual std::string decode(const string & message) = 0;
+        virtual std::string getname() = 0;
+
+};
+
+#endif // BASEENCODEREXECUTOR_H
+
+Стало:
+#ifndef BASEENCODEREXECUTOR_H
+#define BASEENCODEREXECUTOR_H
+
+#include <string>
+using std::string;
+
+class BaseEncoderExecutor {
+    public:
+
+        virtual std::string encode(const string & message) = 0;
+        virtual std::string decode(const string & message) = 0;
+        virtual std::string getname() = 0;
+
+};
+
+#endif
+3. Обязательные комменатрии, исключил
+________________
+Было:
+
+    if (ScheduleMap.find(deviceId) == ScheduleMap.end()) {
+
+        Message * output = new Errors(NoShedule);
+        return output;
+    } else if (inputMeterage->timeStamp < minTimestamp || inputMeterage->timeStamp > maxTimestamp){
+
+        Message * output = new Errors(NoTimeStamp);
+        return output;
+    }  else if (inputMeterage->timeStamp < Information[deviceId].lastTimeStamp){
+        Message * output = new Errors(Obsolete);
+        return output;
+    } else { //отправка команды, запись последней метки времени, расчет СКО
+
+Стало:
+
+    if (ScheduleMap.find(deviceId) == ScheduleMap.end()) {
+
+        Message * output = new Errors(NoShedule);
+        return output;
+    } else if (inputMeterage->timeStamp < minTimestamp || inputMeterage->timeStamp > maxTimestamp){
+
+        Message * output = new Errors(NoTimeStamp);
+        return output;
+    }  else if (inputMeterage->timeStamp < Information[deviceId].lastTimeStamp){
+        Message * output = new Errors(Obsolete);
+        return output;
+    } else {
+4. Комментарий за открывающейся фигурной скобкой, исключил
+________________
+Было:
+if (sheduleStruct.schedule[i].timeStamp == inputMeterage->timeStamp) numberOfTimestamp = i;
+        }
+        uint8_t correction =  sheduleStruct.schedule[numberOfTimestamp].timeStamp - inputMeterage->value; //расчет корректировки
+        Message * output = new Commands(correction);
+        Information[deviceId].lastTimeStamp = inputMeterage->timeStamp; //установка текущей метки времени в качестве последней для текущего устройства
+        Information[deviceId].MSE = calculationMSE(deviceId, correction);
+        Information[deviceId].counter++;
+Стало:
+if (sheduleStruct.schedule[i].timeStamp == inputMeterage->timeStamp) numberOfTimestamp = i;
+        }
+        uint8_t correction =  sheduleStruct.schedule[numberOfTimestamp].timeStamp - inputMeterage->value;
+        Message * output = new Commands(correction);
+        Information[deviceId].lastTimeStamp = inputMeterage->timeStamp;
+        Information[deviceId].MSE = calculationMSE(deviceId, correction);
+        Information[deviceId].counter++;
+5. Слишком много информации, исключил
+6. Шум, исключил
+________________
+Было:
+void DeviceMock::onMessageReceived(const std::string& message)
+{
+    std::string DecodedInputMessage = Encoder2.decode(message);
+    Message * DeserializedMessage = Serializator2.DeSerialize(DecodedInputMessage);
+
+    if (Commands * CommandInput = dynamic_cast<Commands*>(DeserializedMessage)){
+        historyOfCommand.push_back(CommandInput->correction);
+    }
+
+    sendNextMeterage(); // Отправляем следующее измерение
+}
+Стало:
+void DeviceMock::onMessageReceived(const std::string& message)
+{
+    std::string DecodedInputMessage = Encoder2.decode(message);
+    Message * DeserializedMessage = Serializator2.DeSerialize(DecodedInputMessage);
+
+    if (Commands * CommandInput = dynamic_cast<Commands*>(DeserializedMessage)){
+        historyOfCommand.push_back(CommandInput->correction);
+    }
+
+    sendNextMeterage();
+}
+7. Шум, исключил
+________________
+Было:
+struct Phase
+{
+    uint64_t timeStamp = 0; ///< Метка времени начала этапа
+    uint8_t value = 0;      ///< Целевое значение этапа
+};
+Стало:
+struct Phase
+{
+    uint64_t timeStamp = 0;
+    uint8_t value = 0;
+};
+8. Обязательные комментарии, исключил
+________________
+Было:
+uint64_t timeStamp = 0; // Метка времени
+    uint8_t value = 0; // измерение
+    TypeOfMessage type = Meterage;
+
+Стало:
+uint64_t timeStamp = 0;
+    uint8_t value = 0;
+    TypeOfMessage type = Meterage;
+9. Шум, исключил
+________________
+Было:
+// После вставки все оказываются в одной строке -> Можно использовать UNIQUE
+#define ASSERT_EQUAL(x, y)                                                   \
+    {                                                                        \
+        std::ostringstream UNIQUE;                                           \
+        UNIQUE << #x << " != " << #y << ", " << __FILE__ << ":" << __LINE__; \
+        AssertEqual(x, y, UNIQUE.str());                                     \
+    }
+Стало:
+#define ASSERT_EQUAL(x, y)                                                   \
+    {                                                                        \
+        std::ostringstream UNIQUE;                                           \
+        UNIQUE << #x << " != " << #y << ", " << __FILE__ << ":" << __LINE__; \
+        AssertEqual(x, y, UNIQUE.str());                                     \
+    }
+
+10. Шум, исключил
+________________
+Было:
+// Передаем сигнал снизу вверх родительскому виджету.
+    connect(m_system_tray, &SystemTray::startVentilationClickSignal, this, &BottomPanel::startVentilationClickSignal);
+    // Передаем сигналы сверху вниз дочерним виджетам.
+    connect(this, &BottomPanel::leftBarClickSignal, m_system_tray, &SystemTray::leftBarClickSignal);
+
+Стало:
+
+    connect(m_system_tray, &SystemTray::startVentilationClickSignal, this, &BottomPanel::startVentilationClickSignal);
+    connect(this, &BottomPanel::leftBarClickSignal, m_system_tray, &SystemTray::leftBarClickSignal);
+
+11. Использование комментария там, где можно использовать функцию или переменную, исключил, действие очевидно из контекста
+
+12. Шум, исключил
+________________
+Было:
+    connect(&Mobivent::monitor(), &MobiventMonitor::startedInsp, this, &BreathIndicator::setInspView);
+    connect(&Mobivent::monitor(), &MobiventMonitor::startedExp, this, &BreathIndicator::setExpView);
+
+//    Mobivent::monitor().sigExpStarted.add_connect(std::bind(&BreathIndicator::setExpView, this));
+//    Mobivent::monitor().sigInspStarted.add_connect(std::bind(&BreathIndicator::setInspView, this));
+
+Стало:
+    connect(&Mobivent::monitor(), &MobiventMonitor::startedInsp, this, &BreathIndicator::setInspView);
+    connect(&Mobivent::monitor(), &MobiventMonitor::startedExp, this, &BreathIndicator::setExpView);
+
+13. Закомментированный код, исключил
+________________
+Было:
+layout->addWidget(new QWidget); // Чтобы разогнать по разные стороны 1-й и 3-й виджеты.
+Стало:
+layout->addWidget(new QWidget);
+14. Слишком много информации, исключил
+________________
+Было:
+    QString m_code="";                   ///< числовой код сигнала в строковом формате для записи в json
+    QString m_value="0";                 ///< текущее значение сигнала
+    alv_api::SensorsName_t m_sensorName; ///< название датчика из alv_api
+
+Стало:
+    QString m_digit_code_in_string="";
+    QString m_current_value="0";
+    alv_api::SensorsName_t m_sensorName_from_api;
+
+15. Использование комментария там, где можно использовать функцию или переменную, исключил и заменил название переменных на более точные
+
